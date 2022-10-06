@@ -5,13 +5,11 @@ authors = ["Sean Bowe <ewillbefull@gmail.com>",
     "Alex Gluchowski <alex@gluchowski.net>",
     "Alex Vlasov <alex.m.vlasov@gmail.com>"]
 description = "Library for building and interfacing with finite fields"
-documentation = "https://docs.rs/ff/"
-homepage = "https://github.com/matter-labs/ff"
+homepage = "https://github.com/TaceoLabs/ff"
 license = "MIT/Apache-2.0"
-repository = "https://github.com/matter-labs/ff"
+repository = "https://github.com/TaceoLabs/ff"
 edition = "2018"
 exclude = [
-    "ff_derive_const",
     "tester",
     "asm_tester"
 ]
