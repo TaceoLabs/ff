@@ -10,10 +10,10 @@ edition = "2018"
 
 [dependencies]
 ff = {package = "ff_ce", path = "../", features = ["derive"]}
-rand = "0.4"
+rand = "0.8"
 
 [dev-dependencies]
-criterion = "0.3"
+criterion = "0.4"
 
 [[bench]]
 name = "multiplication"

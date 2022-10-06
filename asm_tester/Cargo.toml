@@ -8,11 +8,11 @@ edition = "2018"
 
 [dependencies]
 ff = {package = "ff_ce", path = "../", features = ["asm_derive"]}
-rand = "0.4"
+rand = "0.8"
 serde = "1"
 
 [dev-dependencies]
-criterion = "0.3"
+criterion = "0.4"
 
 [[bench]]
 name = "multiplication"
