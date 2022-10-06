@@ -4,6 +4,7 @@ extern crate byteorder;
 extern crate rand;
 extern crate serde;
 extern crate hex as hex_ext;
+use rand::distributions::{Distribution, Standard};
 pub mod hex {
     pub use hex_ext::*;
 }
@@ -20,6 +21,10 @@ use std::fmt;
 use std::hash;
 use std::io::{self, Read, Write};
 
+/// Backwards compatiablity Marker Rand trait
+pub trait Rand: Sized {}
+impl<T> Rand for T where Standard: Distribution<T> { }
+
 /// This trait represents an element of a field.
 pub trait Field: Sized 
     + Eq 
@@ -30,7 +35,7 @@ pub trait Field: Sized
     + fmt::Debug 
     + fmt::Display 
     + 'static 
-    + rand::Rand 
+    + Rand 
     + hash::Hash 
     + Default 
     + serde::Serialize
@@ -118,7 +123,7 @@ pub trait PrimeFieldRepr:
     + fmt::Debug
     + fmt::Display
     + 'static
-    + rand::Rand
+    + Rand
     + AsRef<[u64]>
     + AsMut<[u64]>
     + From<u64>

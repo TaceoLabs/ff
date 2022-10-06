@@ -17,7 +17,7 @@ exclude = [
 [dependencies]
 byteorder = "1"
 rand = "0.8"
-ff_derive_ce = { version = "0.11", optional = true }
+ff_derive_ce = { git = "https://github.com/TaceoLabs/ff", branch = "feature/rand0.8", version = "0.11", optional = true }
 # ff_derive_ce = { path = "ff_derive", optional = true }
 hex = {version = "0.4"}
 serde = "1"
