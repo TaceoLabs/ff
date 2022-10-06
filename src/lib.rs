@@ -4,6 +4,7 @@ extern crate byteorder;
 extern crate rand;
 extern crate serde;
 extern crate hex as hex_ext;
+use rand::distributions::{Distribution, Standard};
 pub mod hex {
     pub use hex_ext::*;
 }
@@ -20,6 +21,10 @@ use std::fmt;
 use std::hash;
 use std::io::{self, Read, Write};
 
+/// Backwards compatiablity Marker Rand trait
+pub trait Rand: Sized {}
+impl<T> Rand for T where Standard: Distribution<T> { }
+
 /// This trait represents an element of a field.
 pub trait Field: Sized 
     + Eq 
@@ -30,7 +35,7 @@ pub trait Field: Sized
     + fmt::Debug 
     + fmt::Display 
     + 'static 
-    + rand::Rand 
+    + Rand 
     + hash::Hash 
     + Default 
     + serde::Serialize
@@ -118,7 +123,7 @@ pub trait PrimeFieldRepr:
     + fmt::Debug
     + fmt::Display
     + 'static
-    + rand::Rand
+    + Rand
     + AsRef<[u64]>
     + AsMut<[u64]>
     + From<u64>
@@ -204,7 +209,7 @@ pub trait PrimeFieldRepr:
     }
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Eq, PartialEq)]
 pub enum LegendreSymbol {
     Zero = 0,
     QuadraticResidue = 1,
@@ -291,9 +296,11 @@ pub trait PrimeField: Field {
 
     /// Convert a biginteger representation into a prime field element, if
     /// the number is an element of the field.
+    #[allow(clippy::wrong_self_convention)]
     fn into_repr(&self) -> Self::Repr;
 
     /// Expose Montgommery represendation.
+    #[allow(clippy::wrong_self_convention)]
     fn into_raw_repr(&self) -> Self::Repr;
 
     /// Returns the field characteristic; the modulus.
@@ -457,7 +464,7 @@ mod arith_impl {
     pub fn full_width_mul(a: u64, b: u64) -> (u64, u64) {
         let tmp = (a as u128) * (b as u128);
 
-        return (tmp as u64, (tmp >> 64) as u64);
+        (tmp as u64, (tmp >> 64) as u64)
     }
 
     #[inline(always)]
@@ -613,7 +620,7 @@ mod to_hex {
     }
 
     pub fn from_hex<F: PrimeField>(value: &str) -> Result<F, String> {
-        let value = if value.starts_with("0x") { &value[2..] } else { value };
+        let value = if let Some(stripped) = value.strip_prefix("0x") {stripped} else {value};
         if value.len() % 2 != 0 {return Err(format!("hex length must be even for full byte encoding: {}", value))}
         let mut buf = hex_ext::decode(&value).map_err(|_| format!("could not decode hex: {}", value))?;
         let mut repr = F::Repr::default();

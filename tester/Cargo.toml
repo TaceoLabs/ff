@@ -3,18 +3,17 @@ name = "ff_ce_tester"
 version = "0.1.0"
 authors = ["Alex Vlasov <alex.m.vlasov@gmail.com>"]
 description = "Stub for testing ff_ce"
-documentation = "https://docs.rs/ff/"
-homepage = "https://github.com/matter-labs/ff"
+homepage = "https://github.com/TaceoLabs/ff"
 license = "MIT/Apache-2.0"
-repository = "https://github.com/matter-labs/ff"
+repository = "https://github.com/TaceoLabs/ff"
 edition = "2018"
 
 [dependencies]
 ff = {package = "ff_ce", path = "../", features = ["derive"]}
-rand = "0.4"
+rand = "0.8"
 
 [dev-dependencies]
-criterion = "0.3"
+criterion = "0.4"
 
 [[bench]]
 name = "multiplication"

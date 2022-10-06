@@ -124,9 +124,9 @@ fn prime_field_repr_impl(repr: &syn::Ident, limbs: usize) -> proc_macro2::TokenS
             }
         }
 
-        impl ::rand::Rand for #repr {
+        impl ::rand::distributions::Distribution<#repr> for ::rand::distributions::Standard {
             #[inline(always)]
-            fn rand<R: ::rand::Rng>(rng: &mut R) -> Self {
+            fn rand<R: ::rand::Rng>(rng: &mut R) -> #repr {
                 #repr(rng.gen())
             }
         }
@@ -662,9 +662,9 @@ fn prime_field_impl(
             }
         }
 
-        impl ::rand::Rand for #name {
+        impl ::rand::distributions::Distribution<#name> for ::rand::distributions::Standard {
             /// Computes a uniformly random element using rejection sampling.
-            fn rand<R: ::rand::Rng>(rng: &mut R) -> Self {
+            fn rand<R: ::rand::Rng>(rng: &mut R) -> #name {
                 loop {
                     let mut tmp = #name(#repr::rand(rng));
 
